@@ -118,7 +118,7 @@ public class BinaryTree {
     }
 
     private void orderLevelorder(ArrayList<Integer> result) {
-        int h = height(root);
+        int h = heightLevelOrder(root);
         int i;
         for (i = 1; i <= h; i++)
             printGivenLevel(root, i, result);
@@ -153,4 +153,22 @@ public class BinaryTree {
             else return (rheight + 1);
         }
     }
+
+    public int heightLevelOrder() {
+        return heightLevelOrder(root);
+    }
+
+    private int heightLevelOrder(BinaryTreeNode root) {
+        if (root == null)
+            return 0;
+        else {
+            int lheight = heightLevelOrder(root.getLeftChild());
+            int rheight = heightLevelOrder(root.getRightChild());
+
+            if (lheight > rheight)
+                return (lheight + 1);
+            else return (rheight + 1);
+        }
+    }
+
 }
