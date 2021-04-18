@@ -65,6 +65,19 @@ public class BinaryTree {
         orderInorder(node.getRightChild(), result);
     }
 
+    public ArrayList<BinaryTreeNode> inOrderNode() {
+        ArrayList<BinaryTreeNode> result = new ArrayList();
+        orderInorderNode(root, result);
+        return result;
+    }
+    void orderInorderNode(BinaryTreeNode node, ArrayList<BinaryTreeNode> result) {
+        if (node == null)
+            return;
+        orderInorderNode(node.getLeftChild(), result);
+        result.add(node);
+        orderInorderNode(node.getRightChild(), result);
+    }
+
     //----------Pre Order---------------------------
     public ArrayList<Integer> preorder() {
         ArrayList<Integer> result = new ArrayList();

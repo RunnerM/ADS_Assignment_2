@@ -1,18 +1,31 @@
+import java.util.ArrayList;
+
 public class BinarySearchTree extends BinaryTree {
+    public BinarySearchTree(int root) {
+        super(root);
+    }
+
+    public BinarySearchTree() {
+        super();
+    }
+
     public void insert(int element) {
         insertRec(root, element);
     }
 
-    BinaryTreeNode insertRec(BinaryTreeNode node, int element) {
+    private BinaryTreeNode insertRec(BinaryTreeNode root, int element) {
         if (root == null) {
             root = new BinaryTreeNode(element);
             return root;
         }
 
-        if (element < root.element)
+        if (element < root.element) {
             root.addLeftChild(insertRec(root.getLeftChild(), element));
-        else if (element > root.element)
+
+        } else if (element > root.element) {
             root.addRightChild(insertRec(root.getRightChild(), element));
+
+        }
 
         return root;
     }
@@ -57,7 +70,7 @@ public class BinarySearchTree extends BinaryTree {
     public int findMin() {
         BinaryTreeNode current = root;
 
-        /* loop down to find the leftmost leaf */
+
         while (current.getLeftChild() != null) {
             current = current.getLeftChild();
         }
@@ -85,52 +98,33 @@ public class BinarySearchTree extends BinaryTree {
     }
 //-------------------balance----------
 
-
     public void rebalance() {
-        rebalance(root);
+        root=rebalance_2();
     }
 
-    private BinaryTreeNode rotateRight(BinaryTreeNode y) {
-        BinaryTreeNode x = y.getLeftChild();
-        BinaryTreeNode z = x.getRightChild();
-        x.addRightChild(y);
-        y.addLeftChild(z);
-        return x;
+    public BinaryTreeNode rebalance_2() {
+
+        ArrayList<BinaryTreeNode> nodes = new ArrayList<BinaryTreeNode>();
+        nodes = this.inOrderNode();
+
+
+        int n = nodes.size();
+        return buildTreeUtil(nodes, 0, n - 1);
+
+
     }
 
-    private BinaryTreeNode rotateLeft(BinaryTreeNode y) {
-        BinaryTreeNode x = y.getRightChild();
-        BinaryTreeNode z = x.getLeftChild();
-        x.addLeftChild(y);
-        y.addRightChild(z);
-        return x;
+    BinaryTreeNode buildTreeUtil(ArrayList<BinaryTreeNode> nodes, int start, int end) {
+        if (start > end)
+            return null;
+
+        int mid = (start + end) / 2;
+        BinaryTreeNode node = nodes.get(mid);
+
+        node.addLeftChild(buildTreeUtil(nodes, start, mid - 1));
+        node.addRightChild(buildTreeUtil(nodes, mid + 1, end));
+
+        return node;
     }
 
-    private BinaryTreeNode rebalance(BinaryTreeNode z) {
-        int balance = getBalance(z);
-        if (balance > 1) {
-            if (height(z.getRightChild().getRightChild()) > height(z.getRightChild().getLeftChild())) {
-                z = rotateLeft(z);
-            } else {
-                z.addRightChild(rotateRight(z.getRightChild()));
-                z = rotateLeft(z);
-            }
-        } else if (balance < -1) {
-            if (height(z.getLeftChild().getLeftChild()) > height(z.getLeftChild().getRightChild()))
-                z = rotateRight(z);
-            else {
-                z.addLeftChild(rotateLeft(z.getLeftChild()));
-                z = rotateRight(z);
-            }
-        }
-        return z;
-    }
-
-    private int getBalance(BinaryTreeNode n) {
-        return (n == null) ? 0 : height(n.getRightChild()) - height(n.getLeftChild());
-    }
-
-    private int height(BinaryTreeNode n) {
-        return 1 + Math.max(height(n.getLeftChild()), height(n.getRightChild()));
-    }
 }
