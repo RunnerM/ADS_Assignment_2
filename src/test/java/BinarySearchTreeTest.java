@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class BinarySearchTreeTest {
 
@@ -62,10 +63,12 @@ class BinarySearchTreeTest {
     @Test
     void rebalance() {
         binaryTreePrint.printTree(binarySearchTree.root);
+        ArrayList<Integer> actual1= binarySearchTree.preorder();
         binarySearchTree.rebalance();
         System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------");
         binaryTreePrint.printTree(binarySearchTree.root);
         ArrayList<Integer> actual = binarySearchTree.inOrder();
+        ArrayList<Integer> expected1 = binarySearchTree.preorder();
         ArrayList<Integer> expected = new ArrayList<Integer>();
         expected.add(4);
         expected.add(8);
@@ -75,5 +78,7 @@ class BinarySearchTreeTest {
         expected.add(20);
         expected.add(22);
         assertEquals(expected,actual);
+        assertNotEquals(expected1, actual1);
+
     }
 }

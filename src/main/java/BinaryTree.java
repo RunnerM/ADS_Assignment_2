@@ -154,10 +154,6 @@ public class BinaryTree {
         }
     }
 
-    public int heightLevelOrder() {
-        return heightLevelOrder(root);
-    }
-
     private int heightLevelOrder(BinaryTreeNode root) {
         if (root == null)
             return 0;
